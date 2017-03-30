@@ -45,12 +45,12 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
                         var newMembers = update.MembersAdded?.Where(t => t.Id != activity.Recipient.Id);
                         foreach (var newMember in newMembers)
                         {
-                            reply.Text = "Welcome";
+                            reply.Text = "Saludos ";
                             if (!string.IsNullOrEmpty(newMember.Name))
                             {
                                 reply.Text += $" {newMember.Name}";
                             }
-                            reply.Text += "!";
+                            reply.Text += " como puedo ayudarlo?";
                             await client.Conversations.ReplyToActivityAsync(reply);
                         }
                     }
@@ -59,6 +59,9 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
                 case ActivityTypes.Typing:
                 case ActivityTypes.DeleteUserData:
                 case ActivityTypes.Ping:
+                    var client = new ConnectorClient(new Uri(message.ServiceUrl));
+                    var reply = message.CreateReply("Saludos, como puedo ayudarlo?");
+                    await client.Conversations.ReplyToActivityAsync(reply);
                 default:
                     log.Error($"Unknown activity type ignored: {activity.GetActivityType()}");
                     break;
