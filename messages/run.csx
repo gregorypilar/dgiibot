@@ -37,7 +37,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
             switch (activity.GetActivityType())
             {
                 case ActivityTypes.Message:
-                    await Conversation.SendAsync(activity, () => new BasicQnAMakerDialog());
+                    await Conversation.SendAsync(activity, () => new BasicQnAMakerDialog(log));
                     break;
                 case ActivityTypes.ConversationUpdate:
                       log.Error("ActivityTypes.ConversationUpdate");
@@ -52,9 +52,9 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
                     log.Error("ActivityTypes.DeleteUserData");
                 break;
                 case ActivityTypes.Ping:
-                    var clientp = new ConnectorClient(new Uri(activity.ServiceUrl));
-                    var replyP = activity.CreateReply("Saludos, como puedo ayudarlo?");
-                    await clientp.Conversations.ReplyToActivityAsync(replyP);
+                    //var clientp = new ConnectorClient(new Uri(activity.ServiceUrl));
+                    //var replyP = activity.CreateReply("Saludos, como puedo ayudarlo?");
+                    //await clientp.Conversations.ReplyToActivityAsync(replyP);
                 break;
                 default:
                     log.Error($"Unknown activity type ignored: {activity.GetActivityType()}");

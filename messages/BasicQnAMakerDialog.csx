@@ -12,9 +12,11 @@ using Microsoft.Bot.Connector;
 [Serializable]
 public class BasicQnAMakerDialog : QnAMakerDialog
 {
+    private static TraceWriter _log;
     // Go to https://qnamaker.ai and feed data, train & publish your QnA Knowledgebase.
-    public BasicQnAMakerDialog() : base(new QnAMakerService(new QnAMakerAttribute(Utils.GetAppSetting("QnASubscriptionKey"), Utils.GetAppSetting("QnAKnowledgebaseId"))))
+    public BasicQnAMakerDialog(TraceWriter log) : base(new QnAMakerService(new QnAMakerAttribute(Utils.GetAppSetting("QnASubscriptionKey"), Utils.GetAppSetting("QnAKnowledgebaseId"))))
     {
+        _log = log;
     }
     
       protected override Task DefaultWaitNextMessageAsync(IDialogContext context, IMessageActivity message,
