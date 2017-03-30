@@ -65,8 +65,8 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
                 break;
                 case ActivityTypes.Ping:
                     var client = new ConnectorClient(new Uri(message.ServiceUrl));
-                    var reply = message.CreateReply("Saludos, como puedo ayudarlo?");
-                    await client.Conversations.ReplyToActivityAsync(reply);
+                    var replyP = message.CreateReply("Saludos, como puedo ayudarlo?");
+                    await client.Conversations.ReplyToActivityAsync(replyP);
                 default:
                     log.Error($"Unknown activity type ignored: {activity.GetActivityType()}");
                     break;
