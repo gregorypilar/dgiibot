@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using System.Threading;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 using Microsoft.Bot.Builder.Azure;
 using Microsoft.Bot.Builder.Dialogs;
@@ -39,34 +40,22 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
                     await Conversation.SendAsync(activity, () => new BasicQnAMakerDialog());
                     break;
                 case ActivityTypes.ConversationUpdate:
-                    var client = new ConnectorClient(new Uri(activity.ServiceUrl));
-                    IConversationUpdateActivity update = activity;
-                    if (update.MembersAdded.Any())
-                    {
-                        var reply = activity.CreateReply();
-                        var newMembers = update.MembersAdded?.Where(t => t.Id != activity.Recipient.Id);
-                        foreach (var newMember in newMembers)
-                        {
-                            reply.Text = "Saludos ";
-                            if (!string.IsNullOrEmpty(newMember.Name))
-                            {
-                                reply.Text += $" {newMember.Name}";
-                            }
-                            reply.Text += " como puedo ayudarlo?";
-                            await client.Conversations.ReplyToActivityAsync(reply);
-                        }
-                    }
+                      log.Error("ActivityTypes.ConversationUpdate");
                     break;
                 case ActivityTypes.ContactRelationUpdate:
+                  log.Error("ActivityTypes.ContactRelationUpdate");
                 break;
                 case ActivityTypes.Typing:
+                     log.Error("ActivityTypes.Typing");
                 break;
                 case ActivityTypes.DeleteUserData:
+                    log.Error("ActivityTypes.DeleteUserData");
                 break;
                 case ActivityTypes.Ping:
-                    var client = new ConnectorClient(new Uri(message.ServiceUrl));
-                    var replyP = message.CreateReply("Saludos, como puedo ayudarlo?");
-                    await client.Conversations.ReplyToActivityAsync(replyP);
+                    var clientp = new ConnectorClient(new Uri(activity.ServiceUrl));
+                    var replyP = activity.CreateReply("Saludos, como puedo ayudarlo?");
+                    await clientp.Conversations.ReplyToActivityAsync(replyP);
+                break;
                 default:
                     log.Error($"Unknown activity type ignored: {activity.GetActivityType()}");
                     break;
