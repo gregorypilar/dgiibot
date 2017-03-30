@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using Microsoft.Bot.Builder.Azure;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using Microsoft.Bot.Builder.CognitiveServices.QnAMaker;
+ 
 
 public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
@@ -56,8 +58,11 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
                     }
                     break;
                 case ActivityTypes.ContactRelationUpdate:
+                break;
                 case ActivityTypes.Typing:
+                break;
                 case ActivityTypes.DeleteUserData:
+                break;
                 case ActivityTypes.Ping:
                     var client = new ConnectorClient(new Uri(message.ServiceUrl));
                     var reply = message.CreateReply("Saludos, como puedo ayudarlo?");
